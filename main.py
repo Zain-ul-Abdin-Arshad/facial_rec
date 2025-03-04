@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pymongo import MongoClient
 from pydantic import BaseModel
 import logging
+import uvicorn
 
 # Set up logging
 logging.basicConfig(
@@ -73,3 +74,7 @@ async def login(user: UserLogin):
 
     logger.info(f"User logged in successfully: {user.username}")  # Log successful login
     return {"message": "Logged in successfully", "user_id": str(existing_user["_id"]), "fullName": existing_user["fullName"]}
+
+if __name__ == "__main__":
+    PORT = int(os.getenv("PORT", 8000))  # Default to 8000 if PORT is not set
+    uvicorn.run(app, host="0.0.0.0", port=PORT)
